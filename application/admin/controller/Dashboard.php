@@ -3,7 +3,7 @@
 namespace app\admin\controller;
 
 use app\common\controller\Backend;
-use think\Config;
+use think\facade\Config;
 
 /**
  * 控制台

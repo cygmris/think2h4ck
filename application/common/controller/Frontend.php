@@ -3,10 +3,10 @@
 namespace app\common\controller;
 
 use app\common\library\Auth;
-use think\Config;
 use think\Controller;
-use think\Hook;
-use think\Lang;
+use think\facade\Config;
+use think\facade\Hook;
+use think\facade\Lang;
 use think\Loader;
 
 /**
@@ -39,7 +39,7 @@ class Frontend extends Controller
      */
     protected $auth = null;
 
-    public function _initialize()
+    public function initialize()
     {
         //移除HTML标签
         $this->request->filter('trim,strip_tags,htmlspecialchars');
@@ -54,7 +54,7 @@ class Frontend extends Controller
         $this->auth = Auth::instance();
 
         // token
-        $token = $this->request->server('HTTP_TOKEN', $this->request->request('token', \think\Cookie::get('token')));
+        $token = $this->request->server('HTTP_TOKEN', $this->request->request('token', \think\facade\Cookie::get('token')));
 
         $path = str_replace('.', '/', $controllername) . '/' . $actionname;
         // 设置当前请求的URI
@@ -86,7 +86,7 @@ class Frontend extends Controller
         // 语言检测
         $lang = strip_tags($this->request->langset());
 
-        $site = Config::get("site");
+        $site = Config::get("site.");
 
         $upload = \app\common\model\Config::upload();
 
@@ -95,19 +95,18 @@ class Frontend extends Controller
 
         // 配置信息
         $config = [
-            'site'           => array_intersect_key($site, array_flip(['name', 'cdnurl', 'version', 'timezone', 'languages'])),
-            'upload'         => $upload,
-            'modulename'     => $modulename,
+            'site' => array_intersect_key($site, array_flip(['name', 'cdnurl', 'version', 'timezone', 'languages'])),
+            'upload' => $upload,
+            'modulename' => $modulename,
             'controllername' => $controllername,
-            'actionname'     => $actionname,
-            'jsname'         => 'frontend/' . str_replace('.', '/', $controllername),
-            'moduleurl'      => rtrim(url("/{$modulename}", '', false), '/'),
-            'language'       => $lang
+            'actionname' => $actionname,
+            'jsname' => 'frontend/' . str_replace('.', '/', $controllername),
+            'moduleurl' => rtrim(url("/{$modulename}", '', false), '/'),
+            'language' => $lang,
         ];
-        $config = array_merge($config, Config::get("view_replace_str"));
+        $config = array_merge($config, Config::get("template.tpl_replace_string"));
 
-        Config::set('upload', array_merge(Config::get('upload'), $upload));
-
+        Config::set('upload', array_merge(Config::get('upload.'), $upload));
         // 配置信息后
         Hook::listen("config_init", $config);
         // 加载当前控制器语言包

@@ -21,7 +21,7 @@ if (!function_exists('__')) {
             array_shift($vars);
             $lang = '';
         }
-        return \think\Lang::get($name, $vars, $lang);
+        return \think\facade\Lang::get($name, $vars, $lang);
     }
 }
 
@@ -83,7 +83,7 @@ if (!function_exists('cdnurl')) {
     function cdnurl($url, $domain = false)
     {
         $regex = "/^((?:[a-z]+:)?\/\/|data:image\/)(.*)/i";
-        $url = preg_match($regex, $url) ? $url : \think\Config::get('upload.cdnurl') . $url;
+        $url = preg_match($regex, $url) ? $url : \think\facade\Config::get('upload.cdnurl') . $url;
         if ($domain && !preg_match($regex, $url)) {
             $domain = is_bool($domain) ? request()->domain() : $domain;
             $url = $domain . $url;
@@ -91,7 +91,6 @@ if (!function_exists('cdnurl')) {
         return $url;
     }
 }
-
 
 if (!function_exists('is_really_writable')) {
 
@@ -278,8 +277,8 @@ if (!function_exists('var_export_short')) {
                 $r = [];
                 foreach ($var as $key => $value) {
                     $r[] = "$indent    "
-                        . ($indexed ? "" : var_export_short($key) . " => ")
-                        . var_export_short($value, "$indent    ");
+                    . ($indexed ? "" : var_export_short($key) . " => ")
+                    . var_export_short($value, "$indent    ");
                 }
                 return "[\n" . implode(",\n", $r) . "\n" . $indent . "]";
             case "boolean":
@@ -358,7 +357,7 @@ if (!function_exists('hsv2rgb')) {
         return [
             floor($r * 255),
             floor($g * 255),
-            floor($b * 255)
+            floor($b * 255),
         ];
     }
 }

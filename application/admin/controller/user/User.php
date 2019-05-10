@@ -14,15 +14,14 @@ class User extends Backend
 
     protected $relationSearch = true;
 
-
     /**
      * @var \app\admin\model\User
      */
     protected $model = null;
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
         $this->model = model('User');
     }
 
@@ -33,27 +32,24 @@ class User extends Backend
     {
         //设置过滤方法
         $this->request->filter(['strip_tags']);
-        if ($this->request->isAjax())
-        {
+        if ($this->request->isAjax()) {
             //如果发送的来源是Selectpage，则转发到Selectpage
-            if ($this->request->request('keyField'))
-            {
+            if ($this->request->request('keyField')) {
                 return $this->selectpage();
             }
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $total = $this->model
-                    ->with('group')
-                    ->where($where)
-                    ->order($sort, $order)
-                    ->count();
+                ->with('group')
+                ->where($where)
+                ->order($sort, $order)
+                ->count();
             $list = $this->model
-                    ->with('group')
-                    ->where($where)
-                    ->order($sort, $order)
-                    ->limit($offset, $limit)
-                    ->select();
-            foreach ($list as $k => $v)
-            {
+                ->with('group')
+                ->where($where)
+                ->order($sort, $order)
+                ->limit($offset, $limit)
+                ->select();
+            foreach ($list as $k => $v) {
                 $v->hidden(['password', 'salt']);
             }
             $result = array("total" => $total, "rows" => $list);
@@ -66,11 +62,13 @@ class User extends Backend
     /**
      * 编辑
      */
-    public function edit($ids = NULL)
+    public function edit($ids = null)
     {
         $row = $this->model->get($ids);
-        if (!$row)
+        if (!$row) {
             $this->error(__('No Results were found'));
+        }
+
         $this->view->assign('groupList', build_select('row[group_id]', \app\admin\model\UserGroup::column('id,name'), $row['group_id'], ['class' => 'form-control selectpicker']));
         return parent::edit($ids);
     }

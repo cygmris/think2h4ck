@@ -17,9 +17,9 @@ class Group extends Backend
      */
     protected $model = null;
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
         $this->model = model('UserGroup');
         $this->view->assign("statusList", $this->model->getStatusList());
     }
@@ -31,11 +31,13 @@ class Group extends Backend
         return parent::add();
     }
 
-    public function edit($ids = NULL)
+    public function edit($ids = null)
     {
         $row = $this->model->get($ids);
-        if (!$row)
+        if (!$row) {
             $this->error(__('No Results were found'));
+        }
+
         $rules = explode(',', $row['rules']);
         $nodeList = \app\admin\model\UserRule::getTreeList($rules);
         $this->assign("nodeList", $nodeList);

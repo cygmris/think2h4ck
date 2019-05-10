@@ -20,9 +20,9 @@ class Addon extends Backend
 {
     protected $model = null;
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
     }
 
     /**
@@ -62,7 +62,7 @@ class Addon extends Backend
                 foreach ($config as $k => &$v) {
                     if (isset($params[$v['name']])) {
                         if ($v['type'] == 'array') {
-                            $params[$v['name']] = is_array($params[$v['name']]) ? $params[$v['name']] : (array)json_decode($params[$v['name']], true);
+                            $params[$v['name']] = is_array($params[$v['name']]) ? $params[$v['name']] : (array) json_decode($params[$v['name']], true);
                             $value = $params[$v['name']];
                         } else {
                             $value = is_array($params[$v['name']]) ? implode(',', $params[$v['name']]) : $params[$v['name']];
@@ -100,7 +100,7 @@ class Addon extends Backend
     public function install()
     {
         $name = $this->request->post("name");
-        $force = (int)$this->request->post("force");
+        $force = (int) $this->request->post("force");
         if (!$name) {
             $this->error(__('Parameter %s can not be empty', 'name'));
         }
@@ -110,10 +110,10 @@ class Addon extends Backend
             $version = $this->request->post("version");
             $faversion = $this->request->post("faversion");
             $extend = [
-                'uid'       => $uid,
-                'token'     => $token,
-                'version'   => $version,
-                'faversion' => $faversion
+                'uid' => $uid,
+                'token' => $token,
+                'version' => $version,
+                'faversion' => $faversion,
             ];
             Service::install($name, $force, $extend);
             $info = get_addon_info($name);
@@ -133,7 +133,7 @@ class Addon extends Backend
     public function uninstall()
     {
         $name = $this->request->post("name");
-        $force = (int)$this->request->post("force");
+        $force = (int) $this->request->post("force");
         if (!$name) {
             $this->error(__('Parameter %s can not be empty', 'name'));
         }
@@ -154,7 +154,7 @@ class Addon extends Backend
     {
         $name = $this->request->post("name");
         $action = $this->request->post("action");
-        $force = (int)$this->request->post("force");
+        $force = (int) $this->request->post("force");
         if (!$name) {
             $this->error(__('Parameter %s can not be empty', 'name'));
         }
@@ -259,10 +259,10 @@ class Addon extends Backend
             $version = $this->request->post("version");
             $faversion = $this->request->post("faversion");
             $extend = [
-                'uid'       => $uid,
-                'token'     => $token,
-                'version'   => $version,
-                'faversion' => $faversion
+                'uid' => $uid,
+                'token' => $token,
+                'version' => $version,
+                'faversion' => $faversion,
             ];
             //调用更新的方法
             Service::upgrade($name, $extend);
@@ -280,8 +280,8 @@ class Addon extends Backend
      */
     public function downloaded()
     {
-        $offset = (int)$this->request->get("offset");
-        $limit = (int)$this->request->get("limit");
+        $offset = (int) $this->request->get("offset");
+        $limit = (int) $this->request->get("limit");
         $filter = $this->request->get("filter");
         $search = $this->request->get("search");
         $search = htmlspecialchars(strip_tags($search));
@@ -290,7 +290,7 @@ class Addon extends Backend
             $onlineaddons = [];
             $result = Http::sendRequest(config('fastadmin.api_url') . '/addon/index');
             if ($result['ret']) {
-                $json = (array)json_decode($result['msg'], true);
+                $json = (array) json_decode($result['msg'], true);
                 $rows = isset($json['rows']) ? $json['rows'] : [];
                 foreach ($rows as $index => $row) {
                     $onlineaddons[$row['name']] = $row;
@@ -298,7 +298,7 @@ class Addon extends Backend
             }
             Cache::set("onlineaddons", $onlineaddons, 600);
         }
-        $filter = (array)json_decode($filter, true);
+        $filter = (array) json_decode($filter, true);
         $addons = get_addon_list();
         $list = [];
         foreach ($addons as $k => $v) {

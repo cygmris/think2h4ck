@@ -23,12 +23,12 @@ class Rule extends Backend
     protected $rulelist = [];
     protected $multiFields = 'ismenu,status';
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
         $this->model = model('AuthRule');
         // 必须将结果集转换为数组
-        $ruleList = collection($this->model->order('weigh', 'desc')->order('id', 'asc')->select())->toArray();
+        $ruleList = $this->model->order('weigh', 'desc')->order('id', 'asc')->select();
         foreach ($ruleList as $k => &$v) {
             $v['title'] = __($v['title']);
             $v['remark'] = __($v['remark']);

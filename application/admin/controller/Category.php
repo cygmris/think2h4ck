@@ -22,14 +22,14 @@ class Category extends Backend
     protected $categorylist = [];
     protected $noNeedRight = ['selectpage'];
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
         $this->request->filter(['strip_tags']);
         $this->model = model('app\common\model\Category');
 
         $tree = Tree::instance();
-        $tree->init(collection($this->model->order('weigh desc,id desc')->select())->toArray(), 'pid');
+        $tree->init($this->model->order('weigh desc,id desc')->select()->toArray(), 'pid');
         $this->categorylist = $tree->getTreeList($tree->getTreeArray(0), 'name');
         $categorydata = [0 => ['type' => 'all', 'name' => __('None')]];
         foreach ($this->categorylist as $k => $v) {
@@ -131,7 +131,6 @@ class Category extends Backend
         $this->view->assign("row", $row);
         return $this->view->fetch();
     }
-
 
     /**
      * Selectpage搜索

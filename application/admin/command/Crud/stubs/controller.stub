@@ -18,9 +18,9 @@ class {%controllerName%} extends Backend
      */
     protected $model = null;
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
         $this->model = new \{%modelNamespace%}\{%modelName%};
 {%controllerAssignList%}
     }

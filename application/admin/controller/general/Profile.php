@@ -5,7 +5,7 @@ namespace app\admin\controller\general;
 use app\admin\model\Admin;
 use app\common\controller\Backend;
 use fast\Random;
-use think\Session;
+use think\facade\Session;
 
 /**
  * 个人配置

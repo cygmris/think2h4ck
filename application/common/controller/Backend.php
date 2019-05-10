@@ -3,13 +3,13 @@
 namespace app\common\controller;
 
 use app\admin\library\Auth;
-use think\Config;
-use think\Controller;
-use think\Hook;
-use think\Lang;
-use think\Loader;
-use think\Session;
 use fast\Tree;
+use think\Controller;
+use think\facade\Config;
+use think\facade\Hook;
+use think\facade\Lang;
+use think\facade\Session;
+use think\Loader;
 
 /**
  * 后台控制器基类
@@ -112,7 +112,7 @@ class Backend extends Controller
      */
     use \app\admin\library\traits\Backend;
 
-    public function _initialize()
+    public function initialize()
     {
         $modulename = $this->request->module();
         $controllername = Loader::parseName($this->request->controller());
@@ -184,7 +184,7 @@ class Backend extends Controller
         // 语言检测
         $lang = strip_tags($this->request->langset());
 
-        $site = Config::get("site");
+        $site = Config::get("site.");
 
         $upload = \app\common\model\Config::upload();
 
@@ -193,20 +193,20 @@ class Backend extends Controller
 
         // 配置信息
         $config = [
-            'site'           => array_intersect_key($site, array_flip(['name', 'indexurl', 'cdnurl', 'version', 'timezone', 'languages'])),
-            'upload'         => $upload,
-            'modulename'     => $modulename,
+            'site' => array_intersect_key($site, array_flip(['name', 'indexurl', 'cdnurl', 'version', 'timezone', 'languages'])),
+            'upload' => $upload,
+            'modulename' => $modulename,
             'controllername' => $controllername,
-            'actionname'     => $actionname,
-            'jsname'         => 'backend/' . str_replace('.', '/', $controllername),
-            'moduleurl'      => rtrim(url("/{$modulename}", '', false), '/'),
-            'language'       => $lang,
-            'fastadmin'      => Config::get('fastadmin'),
-            'referer'        => Session::get("referer")
+            'actionname' => $actionname,
+            'jsname' => 'backend/' . str_replace('.', '/', $controllername),
+            'moduleurl' => rtrim(url("/{$modulename}", '', false), '/'),
+            'language' => $lang,
+            'fastadmin' => Config::get('fastadmin.'),
+            'referer' => Session::get("referer"),
         ];
-        $config = array_merge($config, Config::get("view_replace_str"));
+        $config = array_merge($config, Config::get("template.tpl_replace_string"));
 
-        Config::set('upload', array_merge(Config::get('upload'), $upload));
+        Config::set('upload', array_merge(Config::get('upload.'), $upload));
 
         // 配置信息后
         Hook::listen("config_init", $config);
@@ -258,8 +258,8 @@ class Backend extends Controller
         $order = $this->request->get("order", "DESC");
         $offset = $this->request->get("offset", 0);
         $limit = $this->request->get("limit", 0);
-        $filter = (array)json_decode($filter, true);
-        $op = (array)json_decode($op, true);
+        $filter = (array) json_decode($filter, true);
+        $op = (array) json_decode($op, true);
         $filter = $filter ? $filter : [];
         $where = [];
         $tableName = '';
@@ -269,7 +269,7 @@ class Backend extends Controller
                 $tableName = $name . '.';
             }
             $sortArr = explode(',', $sort);
-            foreach ($sortArr as $index => & $item) {
+            foreach ($sortArr as $index => &$item) {
                 $item = stripos($item, ".") === false ? $tableName . trim($item) : $item;
             }
             unset($item);
@@ -297,7 +297,7 @@ class Backend extends Controller
             switch ($sym) {
                 case '=':
                 case '<>':
-                    $where[] = [$k, $sym, (string)$v];
+                    $where[] = [$k, $sym, (string) $v];
                     break;
                 case 'LIKE':
                 case 'NOT LIKE':
@@ -414,7 +414,7 @@ class Backend extends Controller
         $this->request->filter(['strip_tags', 'htmlspecialchars']);
 
         //搜索关键词,客户端输入以空格分开,这里接收为数组
-        $word = (array)$this->request->request("q_word/a");
+        $word = (array) $this->request->request("q_word/a");
         //当前页
         $page = $this->request->request("pageNumber");
         //分页大小
@@ -422,7 +422,7 @@ class Backend extends Controller
         //搜索条件
         $andor = $this->request->request("andOr", "and", "strtoupper");
         //排序方式
-        $orderby = (array)$this->request->request("orderBy/a");
+        $orderby = (array) $this->request->request("orderBy/a");
         //显示的字段
         $field = $this->request->request("showField");
         //主键
@@ -430,9 +430,9 @@ class Backend extends Controller
         //主键值
         $primaryvalue = $this->request->request("keyValue");
         //搜索字段
-        $searchfield = (array)$this->request->request("searchField/a");
+        $searchfield = (array) $this->request->request("searchField/a");
         //自定义搜索条件
-        $custom = (array)$this->request->request("custom/a");
+        $custom = (array) $this->request->request("custom/a");
         //是否返回树形结构
         $istree = $this->request->request("isTree", 0);
         $ishtml = $this->request->request("isHtml", 0);
@@ -486,8 +486,8 @@ class Backend extends Controller
                 unset($item['password'], $item['salt']);
                 $list[] = [
                     $primarykey => isset($item[$primarykey]) ? $item[$primarykey] : '',
-                    $field      => isset($item[$field]) ? $item[$field] : '',
-                    'pid'       => isset($item['pid']) ? $item['pid'] : 0
+                    $field => isset($item[$field]) ? $item[$field] : '',
+                    'pid' => isset($item['pid']) ? $item['pid'] : 0,
                 ];
             }
             if ($istree) {

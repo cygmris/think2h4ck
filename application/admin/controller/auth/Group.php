@@ -26,14 +26,14 @@ class Group extends Backend
     //无需要权限判断的方法
     protected $noNeedRight = ['roletree'];
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
         $this->model = model('AuthGroup');
 
         $this->childrenGroupIds = $this->auth->getChildrenGroupIds(true);
 
-        $groupList = collection(AuthGroup::where('id', 'in', $this->childrenGroupIds)->select())->toArray();
+        $groupList = AuthGroup::where('id', 'in', $this->childrenGroupIds)->select();
 
         Tree::instance()->init($groupList);
         $result = [];
@@ -63,7 +63,7 @@ class Group extends Backend
     {
         if ($this->request->isAjax()) {
             $list = AuthGroup::all(array_keys($this->groupdata));
-            $list = collection($list)->toArray();
+//            $list = collection($list)->toArray();
             $groupList = [];
             foreach ($list as $k => $v) {
                 $groupList[$v['id']] = $v;

@@ -187,7 +187,7 @@
                                 version: "{:config('fastadmin.version')}",
                                 os: "{$Think.PHP_OS}",
                                 sapi: "{$Think.PHP_SAPI}",
-                                tpversion: "{$Think.THINK_VERSION}",
+                                tpversion: "{:think\\App::VERSION}",
                                 phpversion: "{$Think.PHP_VERSION}",
                                 software: "{$Request.server.SERVER_SOFTWARE}",
                                 url: location.href,

@@ -57,7 +57,7 @@ $runtimeDir = APP_PATH . 'runtime';
 $errInfo = '';
 
 //数据库配置文件
-$dbConfigFile = APP_PATH . 'database.php';
+$dbConfigFile = ROOT_PATH . 'config/database.php';
 
 // 锁定的文件
 $lockFile = INSTALL_PATH . 'install.lock';

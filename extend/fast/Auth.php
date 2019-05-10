@@ -15,9 +15,9 @@
 namespace fast;
 
 use think\Db;
-use think\Config;
-use think\Session;
-use think\Request;
+use think\facade\Config;
+use think\facade\Request;
+use think\facade\Session;
 
 /**
  * 权限认证类
@@ -48,12 +48,12 @@ class Auth
     protected $request;
     //默认配置
     protected $config = [
-        'auth_on'           => 1, // 权限开关
-        'auth_type'         => 1, // 认证方式，1为实时认证；2为登录认证。
-        'auth_group'        => 'auth_group', // 用户组数据表名
+        'auth_on' => 1, // 权限开关
+        'auth_type' => 1, // 认证方式，1为实时认证；2为登录认证。
+        'auth_group' => 'auth_group', // 用户组数据表名
         'auth_group_access' => 'auth_group_access', // 用户-用户组关系表
-        'auth_rule'         => 'auth_rule', // 权限规则表
-        'auth_user'         => 'user', // 用户信息表
+        'auth_rule' => 'auth_rule', // 权限规则表
+        'auth_user' => 'user', // 用户信息表
     ];
 
     public function __construct()
@@ -187,7 +187,7 @@ class Auth
 
         // 筛选条件
         $where = [
-            'status' => 'normal'
+            'status' => 'normal',
         ];
         if (!in_array('*', $ids)) {
             $where['id'] = ['in', $ids];

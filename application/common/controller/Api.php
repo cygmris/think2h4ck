@@ -72,14 +72,14 @@ class Api
         $this->request = is_null($request) ? Request::instance() : $request;
 
         // 控制器初始化
-        $this->_initialize();
+        $this->initialize();
 
         // 前置操作方法
         if ($this->beforeActionList) {
             foreach ($this->beforeActionList as $method => $options) {
                 is_numeric($method) ?
-                    $this->beforeAction($options) :
-                    $this->beforeAction($method, $options);
+                $this->beforeAction($options) :
+                $this->beforeAction($method, $options);
             }
         }
     }
@@ -88,7 +88,7 @@ class Api
      * 初始化操作
      * @access protected
      */
-    protected function _initialize()
+    protected function initialize()
     {
         //移除HTML标签
         $this->request->filter('trim,strip_tags,htmlspecialchars');
@@ -188,7 +188,7 @@ class Api
     {
         $result = [
             'code' => $code,
-            'msg'  => $msg,
+            'msg' => $msg,
             'time' => Request::instance()->server('REQUEST_TIME'),
             'data' => $data,
         ];

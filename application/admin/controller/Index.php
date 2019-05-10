@@ -4,8 +4,8 @@ namespace app\admin\controller;
 
 use app\admin\model\AdminLog;
 use app\common\controller\Backend;
-use think\Config;
-use think\Hook;
+use think\facade\Config;
+use think\facade\Hook;
 use think\Validate;
 
 /**
@@ -19,9 +19,9 @@ class Index extends Backend
     protected $noNeedRight = ['index', 'logout'];
     protected $layout = '';
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
     }
 
     /**
@@ -32,9 +32,9 @@ class Index extends Backend
         //左侧菜单
         list($menulist, $navlist, $fixedmenu, $referermenu) = $this->auth->getSidebar([
             'dashboard' => 'hot',
-            'addon'     => ['new', 'red', 'badge'],
+            'addon' => ['new', 'red', 'badge'],
             'auth/rule' => __('Menu'),
-            'general'   => ['new', 'purple'],
+            'general' => ['new', 'purple'],
         ], $this->view->site['fixedpage']);
         $action = $this->request->request('action');
         if ($this->request->isPost()) {
@@ -42,6 +42,7 @@ class Index extends Backend
                 $this->success('', null, ['menulist' => $menulist, 'navlist' => $navlist]);
             }
         }
+
         $this->view->assign('menulist', $menulist);
         $this->view->assign('navlist', $navlist);
         $this->view->assign('fixedmenu', $fixedmenu);
@@ -65,13 +66,13 @@ class Index extends Backend
             $keeplogin = $this->request->post('keeplogin');
             $token = $this->request->post('__token__');
             $rule = [
-                'username'  => 'require|length:3,30',
-                'password'  => 'require|length:3,30',
+                'username' => 'require|length:3,30',
+                'password' => 'require|length:3,30',
                 '__token__' => 'token',
             ];
             $data = [
-                'username'  => $username,
-                'password'  => $password,
+                'username' => $username,
+                'password' => $password,
                 '__token__' => $token,
             ];
             if (Config::get('fastadmin.login_captcha')) {

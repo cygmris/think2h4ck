@@ -5,10 +5,10 @@ namespace app\admin\library;
 use app\admin\model\Admin;
 use fast\Random;
 use fast\Tree;
-use think\Config;
-use think\Cookie;
-use think\Request;
-use think\Session;
+use think\facade\Config;
+use think\facade\Cookie;
+use think\facade\Request;
+use think\facade\Session;
 
 class Auth extends \fast\Auth
 {
@@ -241,7 +241,7 @@ class Auth extends \fast\Auth
         $groups = $this->getGroups($uid);
         $groupIds = [];
         foreach ($groups as $K => $v) {
-            $groupIds[] = (int)$v['group_id'];
+            $groupIds[] = (int) $v['group_id'];
         }
         return $groupIds;
     }
@@ -293,7 +293,7 @@ class Auth extends \fast\Auth
         if (!$this->isSuperAdmin()) {
             $groupIds = $this->getChildrenGroupIds(false);
             $authGroupList = \app\admin\model\AuthGroupAccess::
-            field('uid,group_id')
+                field('uid,group_id')
                 ->where('group_id', 'in', $groupIds)
                 ->select();
 
@@ -375,7 +375,9 @@ class Auth extends \fast\Auth
         $refererUrl = Session::get('referer');
         $pinyin = new \Overtrue\Pinyin\Pinyin('Overtrue\Pinyin\MemoryFileDictLoader');
         // 必须将结果集转换为数组
-        $ruleList = collection(\app\admin\model\AuthRule::where('status', 'normal')->where('ismenu', 1)->order('weigh', 'desc')->cache("__menu__")->select())->toArray();
+//        print_r(\app\admin\model\AuthRule::where('status', 'normal')->where('ismenu', 1)->order('weigh', 'desc')->cache("__menu__")->select());
+        $ruleList = (\app\admin\model\AuthRule::where('status', 'normal')->where('ismenu', 1)->order('weigh', 'desc')->cache("__menu__")->select())->toArray();
+
         foreach ($ruleList as $k => &$v) {
             if (!in_array($v['name'], $userRule)) {
                 unset($ruleList[$k]);

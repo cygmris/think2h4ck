@@ -16,9 +16,9 @@ class User extends Api
     protected $noNeedLogin = ['login', 'mobilelogin', 'register', 'resetpwd', 'changeemail', 'changemobile', 'third'];
     protected $noNeedRight = '*';
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
     }
 
     /**
@@ -246,8 +246,8 @@ class User extends Api
             $loginret = \addons\third\library\Service::connect($platform, $result);
             if ($loginret) {
                 $data = [
-                    'userinfo'  => $this->auth->getUserinfo(),
-                    'thirdinfo' => $result
+                    'userinfo' => $this->auth->getUserinfo(),
+                    'thirdinfo' => $result,
                 ];
                 $this->success(__('Logged in successful'), $data);
             }

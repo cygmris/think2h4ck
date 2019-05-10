@@ -14,9 +14,9 @@ class Ems extends Api
     protected $noNeedLogin = '*';
     protected $noNeedRight = '*';
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
         \think\Hook::add('ems_send', function ($params) {
             $obj = \app\common\library\Email::instance();
             $result = $obj

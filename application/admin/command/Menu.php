@@ -45,7 +45,6 @@ class Menu extends Command
         //是否控制器完全匹配
         $equal = $input->getOption('equal');
 
-
         if ($delete) {
             if (in_array('all-controller', $controller)) {
                 throw new Exception("could not delete all menu");
@@ -280,7 +279,7 @@ class Menu extends Command
         $ruleArr = [];
         foreach ($methods as $m => $n) {
             //过滤特殊的类
-            if (substr($n->name, 0, 2) == '__' || $n->name == '_initialize') {
+            if (substr($n->name, 0, 2) == '__' || $n->name == 'initialize') {
                 continue;
             }
             //未启用软删除时过滤相关方法

@@ -5,12 +5,12 @@ namespace app\common\library;
 use app\common\model\User;
 use app\common\model\UserRule;
 use fast\Random;
-use think\Config;
 use think\Db;
 use think\Exception;
-use think\Hook;
-use think\Request;
-use think\Validate;
+use think\facade\Config;
+use think\facade\Hook;
+use think\facade\Request;
+use think\facade\Validate;
 
 class Auth
 {
@@ -145,21 +145,21 @@ class Auth
         $data = [
             'username' => $username,
             'password' => $password,
-            'email'    => $email,
-            'mobile'   => $mobile,
-            'level'    => 1,
-            'score'    => 0,
-            'avatar'   => '',
+            'email' => $email,
+            'mobile' => $mobile,
+            'level' => 1,
+            'score' => 0,
+            'avatar' => '',
         ];
         $params = array_merge($data, [
-            'nickname'  => $username,
-            'salt'      => Random::alnum(),
-            'jointime'  => $time,
-            'joinip'    => $ip,
+            'nickname' => $username,
+            'salt' => Random::alnum(),
+            'jointime' => $time,
+            'joinip' => $ip,
             'logintime' => $time,
-            'loginip'   => $ip,
-            'prevtime'  => $time,
-            'status'    => 'normal'
+            'loginip' => $ip,
+            'prevtime' => $time,
+            'status' => 'normal',
         ]);
         $params['password'] = $this->getEncryptPassword($password, $params['salt']);
         $params = array_merge($params, $extend);

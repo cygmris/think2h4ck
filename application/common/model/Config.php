@@ -28,24 +28,24 @@ class Config extends Model
     public static function getTypeList()
     {
         $typeList = [
-            'string'   => __('String'),
-            'text'     => __('Text'),
-            'editor'   => __('Editor'),
-            'number'   => __('Number'),
-            'date'     => __('Date'),
-            'time'     => __('Time'),
+            'string' => __('String'),
+            'text' => __('Text'),
+            'editor' => __('Editor'),
+            'number' => __('Number'),
+            'date' => __('Date'),
+            'time' => __('Time'),
             'datetime' => __('Datetime'),
-            'select'   => __('Select'),
-            'selects'  => __('Selects'),
-            'image'    => __('Image'),
-            'images'   => __('Images'),
-            'file'     => __('File'),
-            'files'    => __('Files'),
-            'switch'   => __('Switch'),
+            'select' => __('Select'),
+            'selects' => __('Selects'),
+            'image' => __('Image'),
+            'images' => __('Images'),
+            'file' => __('File'),
+            'files' => __('Files'),
+            'switch' => __('Switch'),
             'checkbox' => __('Checkbox'),
-            'radio'    => __('Radio'),
-            'array'    => __('Array'),
-            'custom'   => __('Custom'),
+            'radio' => __('Radio'),
+            'array' => __('Array'),
+            'custom' => __('Custom'),
         ];
         return $typeList;
     }
@@ -54,20 +54,20 @@ class Config extends Model
     {
         $regexList = [
             'required' => '必选',
-            'digits'   => '数字',
-            'letters'  => '字母',
-            'date'     => '日期',
-            'time'     => '时间',
-            'email'    => '邮箱',
-            'url'      => '网址',
-            'qq'       => 'QQ号',
-            'IDcard'   => '身份证',
-            'tel'      => '座机电话',
-            'mobile'   => '手机号',
-            'zipcode'  => '邮编',
-            'chinese'  => '中文',
+            'digits' => '数字',
+            'letters' => '字母',
+            'date' => '日期',
+            'time' => '时间',
+            'email' => '邮箱',
+            'url' => '网址',
+            'qq' => 'QQ号',
+            'IDcard' => '身份证',
+            'tel' => '座机电话',
+            'mobile' => '手机号',
+            'zipcode' => '邮编',
+            'chinese' => '中文',
             'username' => '用户名',
-            'password' => '密码'
+            'password' => '密码',
         ];
         return $regexList;
     }
@@ -149,16 +149,16 @@ class Config extends Model
      */
     public static function upload()
     {
-        $uploadcfg = config('upload');
+        $uploadcfg = config('upload.');
 
         $upload = [
-            'cdnurl'    => $uploadcfg['cdnurl'],
+            'cdnurl' => $uploadcfg['cdnurl'],
             'uploadurl' => $uploadcfg['uploadurl'],
-            'bucket'    => 'local',
-            'maxsize'   => $uploadcfg['maxsize'],
-            'mimetype'  => $uploadcfg['mimetype'],
+            'bucket' => 'local',
+            'maxsize' => $uploadcfg['maxsize'],
+            'mimetype' => $uploadcfg['mimetype'],
             'multipart' => [],
-            'multiple'  => $uploadcfg['multiple'],
+            'multiple' => $uploadcfg['multiple'],
         ];
         return $upload;
     }

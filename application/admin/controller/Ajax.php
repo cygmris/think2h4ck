@@ -5,10 +5,10 @@ namespace app\admin\controller;
 use app\common\controller\Backend;
 use fast\Random;
 use think\addons\Service;
-use think\Cache;
-use think\Config;
 use think\Db;
-use think\Lang;
+use think\facade\Cache;
+use think\facade\Config;
+use think\facade\Lang;
 
 /**
  * Ajax异步请求接口
@@ -21,9 +21,9 @@ class Ajax extends Backend
     protected $noNeedRight = ['*'];
     protected $layout = '';
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
 
         //设置过滤方法
         $this->request->filter(['strip_tags', 'htmlspecialchars']);
@@ -61,7 +61,7 @@ class Ajax extends Backend
         preg_match('/(\d+)(\w+)/', $upload['maxsize'], $matches);
         $type = strtolower($matches[2]);
         $typeDict = ['b' => 0, 'k' => 1, 'kb' => 1, 'm' => 2, 'mb' => 2, 'gb' => 3, 'g' => 3];
-        $size = (int)$upload['maxsize'] * pow(1024, isset($typeDict[$type]) ? $typeDict[$type] : 0);
+        $size = (int) $upload['maxsize'] * pow(1024, isset($typeDict[$type]) ? $typeDict[$type] : 0);
         $fileInfo = $file->getInfo();
         $suffix = strtolower(pathinfo($fileInfo['name'], PATHINFO_EXTENSION));
         $suffix = $suffix ? $suffix : 'file';
@@ -79,18 +79,18 @@ class Ajax extends Backend
             $this->error(__('Uploaded file format is limited'));
         }
         $replaceArr = [
-            '{year}'     => date("Y"),
-            '{mon}'      => date("m"),
-            '{day}'      => date("d"),
-            '{hour}'     => date("H"),
-            '{min}'      => date("i"),
-            '{sec}'      => date("s"),
-            '{random}'   => Random::alnum(16),
+            '{year}' => date("Y"),
+            '{mon}' => date("m"),
+            '{day}' => date("d"),
+            '{hour}' => date("H"),
+            '{min}' => date("i"),
+            '{sec}' => date("s"),
+            '{random}' => Random::alnum(16),
             '{random32}' => Random::alnum(32),
             '{filename}' => $suffix ? substr($fileInfo['name'], 0, strripos($fileInfo['name'], '.')) : $fileInfo['name'],
-            '{suffix}'   => $suffix,
-            '{.suffix}'  => $suffix ? '.' . $suffix : '',
-            '{filemd5}'  => md5_file($fileInfo['tmp_name']),
+            '{suffix}' => $suffix,
+            '{.suffix}' => $suffix ? '.' . $suffix : '',
+            '{filemd5}' => md5_file($fileInfo['tmp_name']),
         ];
         $savekey = $upload['savekey'];
         $savekey = str_replace(array_keys($replaceArr), array_values($replaceArr), $savekey);
@@ -107,26 +107,26 @@ class Ajax extends Backend
                 $imageheight = isset($imgInfo[1]) ? $imgInfo[1] : $imageheight;
             }
             $params = array(
-                'admin_id'    => (int)$this->auth->id,
-                'user_id'     => 0,
-                'filesize'    => $fileInfo['size'],
-                'imagewidth'  => $imagewidth,
+                'admin_id' => (int) $this->auth->id,
+                'user_id' => 0,
+                'filesize' => $fileInfo['size'],
+                'imagewidth' => $imagewidth,
                 'imageheight' => $imageheight,
-                'imagetype'   => $suffix,
+                'imagetype' => $suffix,
                 'imageframes' => 0,
-                'mimetype'    => $fileInfo['type'],
-                'url'         => $uploadDir . $splInfo->getSaveName(),
-                'uploadtime'  => time(),
-                'storage'     => 'local',
-                'sha1'        => $sha1,
-                'extparam'    => json_encode($extparam),
+                'mimetype' => $fileInfo['type'],
+                'url' => $uploadDir . $splInfo->getSaveName(),
+                'uploadtime' => time(),
+                'storage' => 'local',
+                'sha1' => $sha1,
+                'extparam' => json_encode($extparam),
             );
             $attachment = model("attachment");
             $attachment->data(array_filter($params));
             $attachment->save();
             \think\Hook::listen("upload_after", $attachment);
             $this->success(__('Upload successful'), null, [
-                'url' => $uploadDir . $splInfo->getSaveName()
+                'url' => $uploadDir . $splInfo->getSaveName(),
             ]);
         } else {
             // 上传失败获取错误信息
@@ -173,7 +173,7 @@ class Ajax extends Backend
             $weighdata[$v[$prikey]] = $v[$field];
         }
         $position = array_search($changeid, $ids);
-        $desc_id = $sour[$position];    //移动到目标的ID值,取出所处改变前位置的值
+        $desc_id = $sour[$position]; //移动到目标的ID值,取出所处改变前位置的值
         $sour_id = $changeid;
         $weighids = array();
         $temp = array_values(array_diff_assoc($ids, $sour));
@@ -204,16 +204,22 @@ class Ajax extends Backend
             case 'content':
                 rmdirs(CACHE_PATH, false);
                 Cache::clear();
-                if ($type == 'content')
+                if ($type == 'content') {
                     break;
+                }
+
             case 'template':
                 rmdirs(TEMP_PATH, false);
-                if ($type == 'template')
+                if ($type == 'template') {
                     break;
+                }
+
             case 'addons':
                 Service::refresh();
-                if ($type == 'addons')
+                if ($type == 'addons') {
                     break;
+                }
+
         }
 
         \think\Hook::listen("wipecache_after");

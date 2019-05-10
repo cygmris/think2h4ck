@@ -10,15 +10,24 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 // [ 应用入口文件 ]
+namespace think;
+
 // 定义应用目录
 define('APP_PATH', __DIR__ . '/../application/');
+define('ROOT_PATH', __DIR__ . '/../');
+define('DS', DIRECTORY_SEPARATOR);
+
+require __DIR__ . '/../thinkphp/base.php';
 
 // 判断是否安装FastAdmin
-if (!is_file(APP_PATH . 'admin/command/Install/install.lock'))
-{
+if (!is_file(APP_PATH . 'admin/command/Install/install.lock')) {
     header("location:./install.php");
     exit;
 }
 
 // 加载框架引导文件
-require __DIR__ . '/../thinkphp/start.php';
+// Container::get('app')->path(APP_PATH)->run()->send();
+Container::get('app', [APP_PATH])->run()->send();
+// Container::get('app')->run()->send();
+
+// require __DIR__ . '/../thinkphp/start.php';

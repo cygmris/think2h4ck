@@ -22,9 +22,9 @@ class Config extends Backend
     protected $model = null;
     protected $noNeedRight = ['check'];
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
         $this->model = model('Config');
     }
 
@@ -40,7 +40,6 @@ class Config extends Backend
             $siteList[$k]['title'] = $v;
             $siteList[$k]['list'] = [];
         }
-
         foreach ($this->model->all() as $k => $v) {
             if (!isset($siteList[$v['group']])) {
                 continue;

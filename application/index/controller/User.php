@@ -6,7 +6,6 @@ use app\common\controller\Frontend;
 use think\Config;
 use think\Cookie;
 use think\Hook;
-use think\Session;
 use think\Validate;
 
 /**
@@ -18,9 +17,9 @@ class User extends Frontend
     protected $noNeedLogin = ['login', 'register', 'third'];
     protected $noNeedRight = ['*'];
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
         $auth = $this->auth;
 
         if (!Config::get('fastadmin.usercenter')) {
@@ -87,30 +86,30 @@ class User extends Frontend
             $captcha = $this->request->post('captcha');
             $token = $this->request->post('__token__');
             $rule = [
-                'username'  => 'require|length:3,30',
-                'password'  => 'require|length:6,30',
-                'email'     => 'require|email',
-                'mobile'    => 'regex:/^1\d{10}$/',
-                'captcha'   => 'require|captcha',
+                'username' => 'require|length:3,30',
+                'password' => 'require|length:6,30',
+                'email' => 'require|email',
+                'mobile' => 'regex:/^1\d{10}$/',
+                'captcha' => 'require|captcha',
                 '__token__' => 'token',
             ];
 
             $msg = [
                 'username.require' => 'Username can not be empty',
-                'username.length'  => 'Username must be 3 to 30 characters',
+                'username.length' => 'Username must be 3 to 30 characters',
                 'password.require' => 'Password can not be empty',
-                'password.length'  => 'Password must be 6 to 30 characters',
-                'captcha.require'  => 'Captcha can not be empty',
-                'captcha.captcha'  => 'Captcha is incorrect',
-                'email'            => 'Email is incorrect',
-                'mobile'           => 'Mobile is incorrect',
+                'password.length' => 'Password must be 6 to 30 characters',
+                'captcha.require' => 'Captcha can not be empty',
+                'captcha.captcha' => 'Captcha is incorrect',
+                'email' => 'Email is incorrect',
+                'mobile' => 'Mobile is incorrect',
             ];
             $data = [
-                'username'  => $username,
-                'password'  => $password,
-                'email'     => $email,
-                'mobile'    => $mobile,
-                'captcha'   => $captcha,
+                'username' => $username,
+                'password' => $password,
+                'email' => $email,
+                'mobile' => $mobile,
+                'captcha' => $captcha,
                 '__token__' => $token,
             ];
             $validate = new Validate($rule, $msg);
@@ -147,23 +146,23 @@ class User extends Frontend
         if ($this->request->isPost()) {
             $account = $this->request->post('account');
             $password = $this->request->post('password');
-            $keeplogin = (int)$this->request->post('keeplogin');
+            $keeplogin = (int) $this->request->post('keeplogin');
             $token = $this->request->post('__token__');
             $rule = [
-                'account'   => 'require|length:3,50',
-                'password'  => 'require|length:6,30',
+                'account' => 'require|length:3,50',
+                'password' => 'require|length:6,30',
                 '__token__' => 'token',
             ];
 
             $msg = [
-                'account.require'  => 'Account can not be empty',
-                'account.length'   => 'Account must be 3 to 50 characters',
+                'account.require' => 'Account can not be empty',
+                'account.length' => 'Account must be 3 to 50 characters',
                 'password.require' => 'Password can not be empty',
-                'password.length'  => 'Password must be 6 to 30 characters',
+                'password.length' => 'Password must be 6 to 30 characters',
             ];
             $data = [
-                'account'   => $account,
-                'password'  => $password,
+                'account' => $account,
+                'password' => $password,
                 '__token__' => $token,
             ];
             $validate = new Validate($rule, $msg);
@@ -219,24 +218,24 @@ class User extends Frontend
             $renewpassword = $this->request->post("renewpassword");
             $token = $this->request->post('__token__');
             $rule = [
-                'oldpassword'   => 'require|length:6,30',
-                'newpassword'   => 'require|length:6,30',
+                'oldpassword' => 'require|length:6,30',
+                'newpassword' => 'require|length:6,30',
                 'renewpassword' => 'require|length:6,30|confirm:newpassword',
-                '__token__'     => 'token',
+                '__token__' => 'token',
             ];
 
             $msg = [
             ];
             $data = [
-                'oldpassword'   => $oldpassword,
-                'newpassword'   => $newpassword,
+                'oldpassword' => $oldpassword,
+                'newpassword' => $newpassword,
                 'renewpassword' => $renewpassword,
-                '__token__'     => $token,
+                '__token__' => $token,
             ];
             $field = [
-                'oldpassword'   => __('Old password'),
-                'newpassword'   => __('New password'),
-                'renewpassword' => __('Renew password')
+                'oldpassword' => __('Old password'),
+                'newpassword' => __('New password'),
+                'renewpassword' => __('Renew password'),
             ];
             $validate = new Validate($rule, $msg, $field);
             $result = $validate->check($data);

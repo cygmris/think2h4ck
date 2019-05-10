@@ -14,9 +14,9 @@ class Validate extends Api
     protected $layout = '';
     protected $error = null;
 
-    public function _initialize()
+    public function initialize()
     {
-        parent::_initialize();
+        parent::initialize();
     }
 
     /**
@@ -28,7 +28,7 @@ class Validate extends Api
     public function check_email_available()
     {
         $email = $this->request->request('email');
-        $id = (int)$this->request->request('id');
+        $id = (int) $this->request->request('id');
         $count = User::where('email', '=', $email)->where('id', '<>', $id)->count();
         if ($count > 0) {
             $this->error(__('邮箱已经被占用'));
@@ -45,7 +45,7 @@ class Validate extends Api
     public function check_username_available()
     {
         $email = $this->request->request('username');
-        $id = (int)$this->request->request('id');
+        $id = (int) $this->request->request('id');
         $count = User::where('username', '=', $email)->where('id', '<>', $id)->count();
         if ($count > 0) {
             $this->error(__('用户名已经被占用'));
@@ -62,7 +62,7 @@ class Validate extends Api
     public function check_mobile_available()
     {
         $mobile = $this->request->request('mobile');
-        $id = (int)$this->request->request('id');
+        $id = (int) $this->request->request('id');
         $count = User::where('mobile', '=', $mobile)->where('id', '<>', $id)->count();
         if ($count > 0) {
             $this->error(__('该手机号已经占用'));

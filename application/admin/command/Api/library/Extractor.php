@@ -42,7 +42,7 @@ class Extractor
      */
     public function setStrict($value)
     {
-        $this->strict = (bool)$value;
+        $this->strict = (bool) $value;
     }
 
     /**
@@ -190,7 +190,7 @@ class Extractor
 
         $methodAnnotations = self::parseAnnotations($docblockMethod);
         $classAnnotations = self::parseAnnotations($dockblockClass);
-        if (isset($methodAnnotations['ApiInternal']) || $methodName == '_initialize' || $methodName == '_empty') {
+        if (isset($methodAnnotations['ApiInternal']) || $methodName == 'initialize' || $methodName == '_empty') {
             return [];
         }
 
@@ -255,10 +255,10 @@ class Extractor
             foreach ($params as $k => $v) {
                 $arr = explode(' ', preg_replace("/[\s]+/", " ", $v));
                 $methodAnnotations['ApiParams'][] = [
-                    'name'        => isset($arr[1]) ? str_replace('$', '', $arr[1]) : '',
-                    'nullable'    => false,
-                    'type'        => isset($arr[0]) ? $arr[0] : 'string',
-                    'description' => isset($arr[2]) ? $arr[2] : ''
+                    'name' => isset($arr[1]) ? str_replace('$', '', $arr[1]) : '',
+                    'nullable' => false,
+                    'type' => isset($arr[0]) ? $arr[0] : 'string',
+                    'description' => isset($arr[2]) ? $arr[2] : '',
                 ];
             }
         }
