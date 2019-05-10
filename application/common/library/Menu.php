@@ -120,7 +120,7 @@ class Menu
         $menu = AuthRule::getByName($name);
         if ($menu) {
             // 必须将结果集转换为数组
-            $ruleList = collection(AuthRule::order('weigh', 'desc')->field('id,pid,name')->select())->toArray();
+            $ruleList = AuthRule::order('weigh', 'desc')->field('id,pid,name')->select();
             // 构造菜单数据
             $ids = Tree::instance()->init($ruleList)->getChildrenIds($menu['id'], true);
         }

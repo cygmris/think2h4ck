@@ -115,7 +115,7 @@ class Menu extends Command
         } else {
             $authRuleList = AuthRule::select();
             //生成权限规则备份文件
-            file_put_contents(RUNTIME_PATH . 'authrule.json', json_encode(collection($authRuleList)->toArray()));
+            file_put_contents(Env::get('runtime_path') . 'authrule.json', json_encode(collection($authRuleList)->toArray()));
 
             $this->model->where('id', '>', 0)->delete();
             $controllerDir = $adminPath . 'controller' . DS;

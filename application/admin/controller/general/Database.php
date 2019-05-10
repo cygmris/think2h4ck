@@ -24,7 +24,7 @@ class Database extends Backend
     /**
      * 查看
      */
-    function index()
+    public function index()
     {
         $tables_data_length = $tables_index_length = $tables_free_length = $tables_data_count = 0;
         $tables = $list = [];
@@ -49,8 +49,9 @@ class Database extends Backend
             xmp,body{margin:0;padding:0;line-height:18px;font-size:12px;font-family:"Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;}
             hr{height:1px;margin:5px 1px;background:#e3e3e3;border:none;}
             </style>';
-        if ($do_action == '')
+        if ($do_action == '') {
             exit(__('Invalid parameters'));
+        }
 
         $tablename = $this->request->post("tablename/a");
 
@@ -80,10 +81,10 @@ class Database extends Backend
             $time = filemtime($filename);
             $backuplist[$time] =
                 [
-                    'file' => str_replace($backupDir, '', $filename),
-                    'date' => date("Y-m-d H:i:s", $time),
-                    'size' => format_bytes(filesize($filename))
-                ];
+                'file' => str_replace($backupDir, '', $filename),
+                'date' => date("Y-m-d H:i:s", $time),
+                'size' => format_bytes(filesize($filename)),
+            ];
         }
         krsort($backuplist);
 
@@ -104,14 +105,14 @@ class Database extends Backend
             $file = $backupDir . $file;
             if ($action == 'restore') {
                 try {
-                    $dir = RUNTIME_PATH . 'database' . DS;
+                    $dir = Env::get('runtime_path') . 'database' . DS;
                     if (!is_dir($dir)) {
                         mkdir($dir, 0755);
                     }
 
                     if (class_exists('ZipArchive')) {
                         $zip = new ZipArchive;
-                        if ($zip->open($file) !== TRUE) {
+                        if ($zip->open($file) !== true) {
                             throw new Exception(__('Can not open zip file'));
                         }
                         if (!$zip->extractTo($dir)) {
@@ -235,15 +236,19 @@ class Database extends Backend
     private function doquery($sql = null)
     {
         $sqlquery = $sql ? $sql : $this->request->post('sqlquery');
-        if ($sqlquery == '')
+        if ($sqlquery == '') {
             exit(__('SQL can not be empty'));
+        }
+
         $sqlquery = str_replace("\r", "", $sqlquery);
         $sqls = preg_split("/;[ \t]{0,}\n/i", $sqlquery);
         $maxreturn = 100;
         $r = '';
         foreach ($sqls as $key => $val) {
-            if (trim($val) == '')
+            if (trim($val) == '') {
                 continue;
+            }
+
             $val = rtrim($val, ';');
             $r .= "SQL：<span style='color:green;'>{$val}</span> ";
             if (preg_match("/^(select|explain)(.*)/i ", $val)) {
@@ -268,8 +273,10 @@ class Database extends Backend
                 $j = 0;
                 foreach ($resultlist as $m => $n) {
                     $j++;
-                    if (!$limit && $j > $maxreturn)
+                    if (!$limit && $j > $maxreturn) {
                         break;
+                    }
+
                     $r .= "<hr/>";
                     $r .= "<font color='red'>" . __('Row:%s', $j) . "</font><br />";
                     foreach ($n as $k => $v) {

@@ -2,7 +2,7 @@
 
 namespace app\admin\model;
 
-use think\Cache;
+use think\facade\Cache;
 use think\Model;
 
 class AuthRule extends Model

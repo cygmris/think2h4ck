@@ -6,9 +6,10 @@ use app\common\controller\Backend;
 use fast\Http;
 use think\addons\AddonException;
 use think\addons\Service;
-use think\Cache;
-use think\Config;
 use think\Exception;
+use think\facade\Cache;
+use think\facade\Config;
+use think\facade\Env;
 
 /**
  * 插件管理
@@ -163,6 +164,7 @@ class Addon extends Backend
             $action = $action == 'enable' ? $action : 'disable';
             //调用启用、禁用的方法
             Service::$action($name, $force);
+
             Cache::rm('__menu__');
             $this->success(__('Operate successful'));
         } catch (AddonException $e) {
@@ -180,7 +182,7 @@ class Addon extends Backend
         Config::set('default_return_type', 'json');
 
         $file = $this->request->file('file');
-        $addonTmpDir = RUNTIME_PATH . 'addons' . DS;
+        $addonTmpDir = Env::get('runtime_path') . 'addons' . DS;
         if (!is_dir($addonTmpDir)) {
             @mkdir($addonTmpDir, 0755, true);
         }
