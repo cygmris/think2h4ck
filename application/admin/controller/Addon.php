@@ -10,6 +10,7 @@ use think\Exception;
 use think\facade\Cache;
 use think\facade\Config;
 use think\facade\Env;
+use think\facade\Log;
 
 /**
  * 插件管理
@@ -191,9 +192,10 @@ class Addon extends Backend
             $tmpName = substr($info->getFilename(), 0, stripos($info->getFilename(), '.'));
             $tmpAddonDir = ADDON_PATH . $tmpName . DS;
             $tmpFile = $addonTmpDir . $info->getSaveName();
+            Log::debug('tmpFile path:' . $tmpFile);
             try {
                 Service::unzip($tmpName);
-                @unlink($tmpFile);
+//                @unlink($tmpFile);
                 $infoFile = $tmpAddonDir . 'info.ini';
                 if (!is_file($infoFile)) {
                     throw new Exception(__('Addon info file was not found'));
@@ -224,11 +226,18 @@ class Addon extends Backend
                     $class = get_addon_class($name);
                     if (class_exists($class)) {
                         $addon = new $class();
+                        Log::debug('installing offline addon');
                         $addon->install();
+                        Log::debug('installation of offline addon done');
+
                     }
 
                     //导入SQL
+                    Log::debug('importing sql of offline addon'.$name);
+
                     Service::importsql($name);
+
+                    Log::debug('importing sql of offline addon done');
 
                     $info['config'] = get_addon_config($name) ? 1 : 0;
                     $this->success(__('Offline installed tips'), null, ['addon' => $info]);

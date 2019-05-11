@@ -6,6 +6,7 @@ use app\admin\model\AdminLog;
 use app\common\controller\Backend;
 use think\facade\Config;
 use think\facade\Hook;
+use think\Loader;
 use think\Validate;
 
 /**
@@ -116,6 +117,11 @@ class Index extends Backend
         $this->auth->logout();
         Hook::listen("admin_logout_after", $this->request);
         $this->success(__('Logout successful'), 'index/login');
+    }
+
+    public function xxoo (){
+       $xx = Loader::parseName("example");
+       dump($xx);
     }
 
 }

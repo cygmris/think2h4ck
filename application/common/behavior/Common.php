@@ -3,6 +3,8 @@
 namespace app\common\behavior;
 
 use think\facade\Config;
+use think\facade\Lang;
+
 use think\Request;
 
 class Common
@@ -65,7 +67,7 @@ class Common
         // }
     }
 
-    public function addonBegin(&$request)
+    public function addonBegin(Request $request)
     {
         // 加载插件语言包
         Lang::load([

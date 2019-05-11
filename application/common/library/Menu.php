@@ -19,6 +19,7 @@ class Menu
     {
         if (!is_numeric($parent)) {
             $parentRule = AuthRule::getByName($parent);
+
             $pid = $parentRule ? $parentRule['id'] : 0;
         } else {
             $pid = $parent;

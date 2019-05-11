@@ -56,4 +56,8 @@ return [
 
     'query' => '\\think\\db\\Query',
 
+    'params' => [
+        PDO::ATTR_EMULATE_PREPARES  => true,
+//        PDO::ATTR_CASE              => PDO::CASE_LOWER,
+    ]
 ];
