@@ -195,7 +195,7 @@ class Addon extends Backend
             Log::debug('tmpFile path:' . $tmpFile);
             try {
                 Service::unzip($tmpName);
-//                @unlink($tmpFile);
+                @unlink($tmpFile);
                 $infoFile = $tmpAddonDir . 'info.ini';
                 if (!is_file($infoFile)) {
                     throw new Exception(__('Addon info file was not found'));
@@ -238,7 +238,6 @@ class Addon extends Backend
                     Service::importsql($name);
 
                     Log::debug('importing sql of offline addon done');
-
                     $info['config'] = get_addon_config($name) ? 1 : 0;
                     $this->success(__('Offline installed tips'), null, ['addon' => $info]);
                 } catch (Exception $e) {
